@@ -14,11 +14,11 @@ class TodoInput extends React.Component {
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label htmlFor="taskTitle">Title</label>
-                            <input className="form-control text-capitalize" type="text" placeholder="Title" name="taskTitle" value={taskTitle} onChange={handleChange} required />
+                            <input className="form-control text-capitalize" type="text" name="taskTitle" value={taskTitle} onChange={handleChange} required />
                         </div>
                         <div class="form-group col-md-6">
                             <label htmlFor="textarea1">Descritpion</label>
-                            <textarea className="form-control" id="textarea1" rows="1" type="text" placeholder="Descritpion" name="taskDescription" value={taskDescription} onChange={handleChange}></textarea>
+                            <textarea className="form-control" id="textarea1" rows="1" type="text" name="taskDescription" value={taskDescription} onChange={handleChange}></textarea>
                         </div>
                     </div>
                     <div class="form-row">
