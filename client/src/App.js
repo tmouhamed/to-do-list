@@ -104,7 +104,7 @@ class App extends React.Component {
   componentDidMount() {
     this.getTaskList();
   }
-  
+
   render() {
     const activeTasks = this.state.taskList.filter(task => task.status === 'active');
     const pendingTasks = this.state.taskList.filter(task => task.status === 'pending');
@@ -121,15 +121,28 @@ class App extends React.Component {
           <Tab eventKey="default" title={`All (${this.state.taskList.length})`} >
             <div className="row">
               <div className="col-bg-12">
-                <TodoList  taskStatus={this.state.taskStatus} taskList={this.state.taskList} deleteAll={this.deleteAll} deleteTask={this.deleteTask} editTask={this.editTask} />
+                <TodoList taskStatus={this.state.taskStatus} taskList={this.state.taskList} deleteAll={this.deleteAll} deleteTask={this.deleteTask} editTask={this.editTask} />
               </div>
             </div>
           </Tab>
-          <Tab eventKey="active" title={`Active (${this.state.taskList.length})`} >
+          <Tab eventKey="active" title={`Active (${activeTasks.length})`} >
             <div className="row">
               <div className="col-bg-12">
-
                 <TodoList taskStatus={this.state.taskStatus} taskList={activeTasks} deleteAll={this.deleteAll} deleteTask={this.deleteTask} editTask={this.editTask} />
+              </div>
+            </div>
+          </Tab>
+          <Tab eventKey="pending" title={`Pending (${pendingTasks.length})`} >
+            <div className="row">
+              <div className="col-bg-12">
+                <TodoList taskStatus={this.state.taskStatus} taskList={pendingTasks} deleteAll={this.deleteAll} deleteTask={this.deleteTask} editTask={this.editTask} />
+              </div>
+            </div>
+          </Tab>
+          <Tab eventKey="done" title={`Done! (${finishedTasks.length})`} >
+            <div className="row">
+              <div className="col-bg-12">
+                <TodoList taskStatus={this.state.taskStatus} taskList={finishedTasks} deleteAll={this.deleteAll} deleteTask={this.deleteTask} editTask={this.editTask} />
               </div>
             </div>
           </Tab>
