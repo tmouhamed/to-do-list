@@ -1,8 +1,11 @@
 import React from 'react';
 import Axios from 'axios';
 import uuid from 'uuid';
+import { Tabs, Tab } from 'react-bootstrap';
 import './App.css';
+
 import TodoInput from './components/TodoInput';
+import TodoList from './components/TodoList';
 
 class App extends React.Component {
   url = 'http://localhost:8080';
@@ -30,9 +33,9 @@ class App extends React.Component {
 
   // post the new task to the web server
   postNewTask = newTask => {
-   
+
   }
-  
+
   // assign the form inputs to the state values
   handleChange = (e) => {
     this.setState({
@@ -40,8 +43,9 @@ class App extends React.Component {
     })
   }
 
-  // add new task and clear the state values
+  // post new task to the server and clear the state values
   handleSubmit = (e) => {
+    // to prevent the page from reloading
     e.preventDefault();
     const newTask = {
       id: this.state.id,
@@ -52,35 +56,42 @@ class App extends React.Component {
       date: this.state.taskDate.toLocaleString()
     }
     Axios.post(`${this.url}/list/`, newTask)
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(
-      error => console.error("This is an error", error
-      ));
-    // const updatedList = [...this.state.taskList, newTask];
-
-    // this.setState({
-    //   taskList: updatedList,
-    //   taskTitle: '',
-    //   taskDescription: '',
-    //   taskStatus: '',
-    //   taskCategory: '',
-    //   taskDate: new Date(),
-    //   id: uuid(),
-    //   editTask: false
-    // })
+      .then(response => {
+        this.setState({
+          taskTitle: '',
+          taskDescription: '',
+          taskStatus: '',
+          taskCategory: '',
+          taskDate: new Date(),
+          id: uuid(),
+          editTask: false
+        })
+      })
+      .catch(
+        error => console.error("This is an error", error
+        ));
   }
 
+  // delete all tasks
   deleteAll = () => {
     this.setState({
       taskList: []
     })
   }
 
+  // delete selected task by id
+  deleteTask = (id) => {
+    const filteredList = this.state.taskList.filter(task => task.id !== id);
+    this.setState({
+      taskList: filteredList
+    })
+
+  }
+
   componentDidMount() {
     this.getTaskList();
   }
+
   render() {
     return (
       <div className="container">
@@ -90,6 +101,15 @@ class App extends React.Component {
             <TodoInput taskStatus={this.state.taskStatus} taskCategory={this.state.taskCategory} taskDate={this.state.taskDate} handleChange={this.handleChange} handleSubmit={this.handleSubmit} taskTitle={this.state.taskTitle} taskDescription={this.state.taskDescription} editTask={this.state.editTask} changeDate={this.changeDate} selectedDate={this.state.taskDate} />
           </div>
         </div>
+        <Tabs defaultActiveKey="default" transition={false} className="bg-info border-info" >
+            <Tab eventKey="default" title={`All (${this.state.taskList.length})`} >
+              <div className="row">
+                <div className="col-bg-12">
+                  <TodoList taskStatus={this.state.taskStatus} taskList={this.state.taskList} deleteAll={this.deleteAll} deleteTask={this.deleteTask} editTask={this.editTask}  />
+                </div>
+              </div>
+            </Tab>
+          </Tabs>
       </div>
     );
   }
