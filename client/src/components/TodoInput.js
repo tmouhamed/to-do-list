@@ -6,23 +6,31 @@ import { faCalendarWeek } from '@fortawesome/free-solid-svg-icons';
 import "react-datepicker/dist/react-datepicker.css";
 
 class TodoInput extends React.Component {
+
+    //prevent an infinte loop because of componentDidMount cycle
+    componentDidUpdate(prevProps) {
+        //to make the homepage only for the first video 
+        if (this.props.id !== prevProps.id) {
+          this.props.getTaskList();
+        }
+      }
     render() {
         const { handleChange, handleSubmit, taskDescription, taskTitle, editTask, changeDate, taskStatus, taskDate, taskCategory } = this.props;
         return (
             <div className="my-3 card card-body">
                 <form onSubmit={handleSubmit} className="needs-validation">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
+                    <div className="form-row">
+                        <div className="form-group col-md-6">
                             <label htmlFor="taskTitle">Title</label>
                             <input className="form-control text-capitalize" type="text" name="taskTitle" value={taskTitle} onChange={handleChange} required />
                         </div>
-                        <div class="form-group col-md-6">
+                        <div className="form-group col-md-6">
                             <label htmlFor="textarea1">Descritpion</label>
                             <textarea className="form-control" id="textarea1" rows="1" type="text" name="taskDescription" value={taskDescription} onChange={handleChange}></textarea>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
+                    <div className="form-row">
+                        <div className="form-group col-md-4">
                             <label htmlFor="statuSelect1">Task Status</label>
                             <select className="form-control" id="statuSelect1" name="taskStatus" value={taskStatus} onChange={handleChange} required>
                                 <option value="">select</option>
@@ -31,7 +39,7 @@ class TodoInput extends React.Component {
                                 <option value="done">Done !</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div className="form-group col-md-3">
                             <label htmlFor="statuSelect2">Task Category</label>
                             <select className="form-control" id="statuSelect2" name="taskCategory"  value={taskCategory} onChange={handleChange} required>
                                 <option value="">select</option>
@@ -42,7 +50,7 @@ class TodoInput extends React.Component {
                                 <option value="health">Study</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div className="form-group col-md-4">
                             <label>Date</label>
                             <div className="input-group">
                                 <div className="input-group-prepend">
@@ -54,7 +62,7 @@ class TodoInput extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <button type="submit" className={editTask ? "btn btn-block btn-success mt-3" : "btn right btn-outline-info"}>{editTask ? "Edit Item" : "Add Item"}</button>
+                    <button type="submit" className={editTask ? "btn btn-success mt-3" : "btn right btn-outline-info"}>{editTask ? "Edit Item" : "Add Item"}</button>
                 </form>
             </div >
         );

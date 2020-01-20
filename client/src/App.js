@@ -31,11 +31,6 @@ class App extends React.Component {
       })
   }
 
-  // post the new task to the web server
-  postNewTask = newTask => {
-
-  }
-
   // assign the form inputs to the state values
   handleChange = (e) => {
     this.setState({
@@ -85,31 +80,60 @@ class App extends React.Component {
     this.setState({
       taskList: filteredList
     })
+  }
 
+  editTask = (id) => {
+    //to select the specific task by ID from the task list to edit
+    const taskToEdit = this.state.taskList.find(task => task.id === id);
+
+    // to remove this task from the task list for edit
+    const filteredList = this.state.taskList.filter(task => task.id !== id);
+
+    //change the input value to the selected task values to edit
+    //change editTask to true to send it to the todoInput component
+    this.setState({
+      taskTitle: taskToEdit.title,
+      taskDescription: taskToEdit.description,
+      taskList: filteredList,
+      taskCategory: taskToEdit.category,
+      taskStatus: taskToEdit.status,
+      editTask: true
+    })
   }
 
   componentDidMount() {
     this.getTaskList();
   }
-
+  
   render() {
+    const activeTasks = this.state.taskList.filter(task => task.status === 'active');
+    const pendingTasks = this.state.taskList.filter(task => task.status === 'pending');
+    const finishedTasks = this.state.taskList.filter(task => task.status === 'done');
     return (
       <div className="container">
-        <div class="card border-info">
-          <h4 class="card-header bg-info text-white text-center"> To-Do List</h4>
-          <div class="card-body">
-            <TodoInput taskStatus={this.state.taskStatus} taskCategory={this.state.taskCategory} taskDate={this.state.taskDate} handleChange={this.handleChange} handleSubmit={this.handleSubmit} taskTitle={this.state.taskTitle} taskDescription={this.state.taskDescription} editTask={this.state.editTask} changeDate={this.changeDate} selectedDate={this.state.taskDate} />
+        <div className="card border-info">
+          <h4 className="card-header bg-info text-white text-center"> To-Do List</h4>
+          <div className="card-body">
+            <TodoInput id={this.state.id} getTaskList={this.getTaskList} taskStatus={this.state.taskStatus} taskCategory={this.state.taskCategory} taskDate={this.state.taskDate} handleChange={this.handleChange} handleSubmit={this.handleSubmit} taskTitle={this.state.taskTitle} taskDescription={this.state.taskDescription} editTask={this.state.editTask} changeDate={this.changeDate} selectedDate={this.state.taskDate} />
           </div>
         </div>
         <Tabs defaultActiveKey="default" transition={false} className="bg-info border-info" >
-            <Tab eventKey="default" title={`All (${this.state.taskList.length})`} >
-              <div className="row">
-                <div className="col-bg-12">
-                  <TodoList taskStatus={this.state.taskStatus} taskList={this.state.taskList} deleteAll={this.deleteAll} deleteTask={this.deleteTask} editTask={this.editTask}  />
-                </div>
+          <Tab eventKey="default" title={`All (${this.state.taskList.length})`} >
+            <div className="row">
+              <div className="col-bg-12">
+                <TodoList  taskStatus={this.state.taskStatus} taskList={this.state.taskList} deleteAll={this.deleteAll} deleteTask={this.deleteTask} editTask={this.editTask} />
               </div>
-            </Tab>
-          </Tabs>
+            </div>
+          </Tab>
+          <Tab eventKey="active" title={`Active (${this.state.taskList.length})`} >
+            <div className="row">
+              <div className="col-bg-12">
+
+                <TodoList taskStatus={this.state.taskStatus} taskList={activeTasks} deleteAll={this.deleteAll} deleteTask={this.deleteTask} editTask={this.editTask} />
+              </div>
+            </div>
+          </Tab>
+        </Tabs>
       </div>
     );
   }

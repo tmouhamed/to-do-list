@@ -23,7 +23,7 @@ class TodoList extends React.Component {
                     </tbody>
                 </table>
                 {/* condition to display clear all button only if theres more than one task */}
-                {taskList.length > 1 ? <button className="btn btn-block btn-danger mt-5" onClick={deleteAll}>clear all</button> : ''}
+                {taskList.length > 1 ? <button className="btn btn-danger mt-5" onClick={deleteAll}>clear all</button> : ''}
             </>
         );
     }
