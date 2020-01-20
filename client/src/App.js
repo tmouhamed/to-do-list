@@ -6,6 +6,7 @@ import './App.css';
 
 import TodoInput from './components/TodoInput';
 import TodoList from './components/TodoList';
+import Calender from './components/Calender';
 
 class App extends React.Component {
   url = 'http://localhost:8080';
@@ -101,6 +102,12 @@ class App extends React.Component {
     })
   }
 
+  changeDate = (date) => {
+    this.setState({
+      taskDate: date
+    });
+  };
+
   componentDidMount() {
     this.getTaskList();
   }
@@ -118,6 +125,7 @@ class App extends React.Component {
           </div>
         </div>
         <Tabs defaultActiveKey="default" transition={false} className="bg-info border-info" >
+
           <Tab eventKey="default" title={`All (${this.state.taskList.length})`} >
             <div className="row">
               <div className="col-bg-12">
@@ -146,6 +154,13 @@ class App extends React.Component {
               </div>
             </div>
           </Tab>
+          {/* <Tab eventKey="done" title={`Calender`} >
+            <div className="row">
+              <div className="col-bg-12">
+                <Calender taskList={this.state.taskList}/>
+              </div>
+            </div>
+          </Tab> */}
         </Tabs>
       </div>
     );
